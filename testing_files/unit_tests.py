@@ -1,6 +1,6 @@
 import unittest
 #import model # you have to change this according to your folder/file name
-import test
+
 
 class UnitTestsMenuManagement(unittest.TestCase):
     def test_recipe_class(self):
@@ -17,7 +17,6 @@ class UnitTestsMenuManagement(unittest.TestCase):
         self.assertIsInstance(recipe1.ingredients.unit,int)
         self.assertIsInstance(recipe1.name,str)
         self.assertIsInstance(recipe1.instruction,str)
-        self.assertIsInstance(recipe1.ingredients,list)
         self.assertIsInstance(recipe1.category,str)
         self.assertTrue(recipe1.id>0)
         self.assertTrue(recipe1.prep_time>0)
@@ -27,7 +26,7 @@ class UnitTestsMenuManagement(unittest.TestCase):
         self.assertTrue(recipe1.ingredients.amount>0)
         
     def test_import_json(self):
-        recipe_result=test.import_file()# you have to change this according to your import function
+        recipe_result=recipe_manager.import_file()# you have to change this according to your import function
 
         self.assertTrue(recipe_result[0])
         self.assertTrue(len(recipe_result[1])==1)
