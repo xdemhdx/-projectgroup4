@@ -1,5 +1,5 @@
 import unittest
-import datalayer # you have to change this according to your folder/file name
+import model # you have to change this according to your folder/file name
 
 
 class UnitTestsMenuManagement(unittest.TestCase):
