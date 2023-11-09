@@ -1,6 +1,6 @@
 import unittest
-import model # you have to change this according to your folder/file name
-
+#import model # you have to change this according to your folder/file name
+import test
 
 class UnitTestsMenuManagement(unittest.TestCase):
     def test_recipe_class(self):
@@ -12,7 +12,9 @@ class UnitTestsMenuManagement(unittest.TestCase):
         self.assertIsInstance(recipe1.cook_time,int)
         self.assertIsInstance(recipe1.serving,int)
         self.assertIsInstance(recipe1.calories,int)
-        self.assertIsInstance(recipe1.ingredeints.amount,int)
+        self.assertIsInstance(recipe1.ingredients.amount,int)
+        self.assertIsInstance(recipe1.ingredients.name,str)
+        self.assertIsInstance(recipe1.ingredients.unit,int)
         self.assertIsInstance(recipe1.name,str)
         self.assertIsInstance(recipe1.instruction,str)
         self.assertIsInstance(recipe1.ingredients,list)
@@ -25,12 +27,23 @@ class UnitTestsMenuManagement(unittest.TestCase):
         self.assertTrue(recipe1.ingredients.amount>0)
         
     def test_import_json(self):
-        recipe_result=menu_management.Test.import_file()# you have to change this according to your import function
+        recipe_result=test.import_file()# you have to change this according to your import function
+
         self.assertTrue(recipe_result[0])
         self.assertTrue(len(recipe_result[1])==1)
-        self.assertTrue(recipe_result[1]["recipes"][0]["ingredients"][0]["amount"]>0)
-        self.assertTrue(recipe_result[1]["recipes"][0]["preparation time (minutes)"]>0)
-        self.assertTrue(recipe_result[1]["recipes"][0]["cooking time (minutes)"]>0)
-        self.assertTrue(recipe_result[1]["recipes"][0]["servings"]>0)
-        self.assertTrue(recipe_result[1]["recipes"][0]["calories"]>0)
-        self.assertTrue(recipe_result[1]["recipes"][0]["id"]>0)
+        self.assertTrue(recipe_result[1][0].ingredients.amount>0)
+        self.assertTrue(recipe_result[1][0].prep_time>0)
+        self.assertTrue(recipe_result[1][0].cook_time>0)
+        self.assertTrue(recipe_result[1][0].serving>0)
+        self.assertTrue(recipe_result[1][0].calories>0)
+        self.assertIsInstance(recipe_result[1][0].id,int)
+        self.assertIsInstance(recipe_result[1][0].prep_time,int)
+        self.assertIsInstance(recipe_result[1][0].cook_time,int)
+        self.assertIsInstance(recipe_result[1][0].serving,int)
+        self.assertIsInstance(recipe_result[1][0].calories,int)
+        self.assertIsInstance(recipe_result[1][0].ingredients.name,str)
+        self.assertIsInstance(recipe_result[1][0].ingredients.amount,int)
+        self.assertIsInstance(recipe_result[1][0].name,str)
+        self.assertIsInstance(recipe_result[1][0].instruction,str)
+        self.assertIsInstance(recipe_result[1][0].ingredients,test.ingredient)
+        self.assertIsInstance(recipe_result[1][0].category,str)
