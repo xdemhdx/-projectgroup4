@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Recipe Management System</title>
-
-    
+    <title>Edit Recipe</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <style>
-      body{
-        background-image: linear-gradient(to right, #ff8177 0%, #ff867a 0%, #ff8c7f 21%, #f99185 52%, #cf556c 78%, #b12a5b 100%);
-      }
+        body{
+            background-image: linear-gradient(to right, #ff8177 0%, #ff867a 0%, #ff8c7f 21%, #f99185 52%, #cf556c 78%, #b12a5b 100%);
+        }
     </style>
 </head>
 <body>
@@ -34,13 +32,23 @@
         </div>
     </nav>
 
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-12 d-flex justify-content-center align-items-center" style="height: 100vh;">
-                <h1>Welcome to Recipe Management System</h1>
-            </div>
-        </div>
-    </div>
 
+    <div class="container mt-4">
+        <h2>Edit Recipe</h2>
+        <form action="/update-recipe" method="post">
+            <input type="hidden" name="id" value="{{recipes.get('id')}}"> 
+            <div class="form-group">
+                <label for="recipeName">Recipe Name</label>
+                <input type="text" class="form-control" id="recipeName" name="recipe_name" value="{{recipes.get('recipe_name')}}"required>
+            </div>
+            <div class="form-group">
+                <label for="instructions">Instructions</label>
+                <textarea class="form-control" id="instructions" name="instructions" rows="3" required>{{recipes.get('instructions')}}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Recipe</button>
+            <a href="/{{recipes.get('id')}}/delete" class="btn btn-danger" role="button">Delete Recipe</a>
+
+        </form>
+    </div>
 </body>
 </html>
