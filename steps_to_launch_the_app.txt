@@ -1,0 +1,29 @@
+Install xampp then run mysql and apache
+go to 127.0.0.1 then phpmyAdmin
+create a user the name is flask with a password password yes the password is password
+
+then create a database with name of smilecook_class and grant all CURD permision to  flask user 
+
+clone the repo from git 
+
+open terminal then create a venv NOTE!!! each time you push dont include venv folder 
+
+then on the terminal type the followling .\venv\Scripts\active if you got some errors put this command then try again  Set-ExecutionPolicy -ExecutionPolicy Unrestricted  using a powershell instead of cmd is better 
+
+once that is done and everything is fine 
+
+type the following in the terminal pip install -r requirements.txt it will install all the packages are used in this project
+
+(Note any errors you face its your completly responsiblites you are in third year class you should know how to solve them the application is completely running fine just try to configure your system to run it)
+
+once that done type the following to migrate the tables in you local sql
+
+flask db init 
+flask db migrate
+flask db upgrade 
+
+if errors try to fix them if not continue here
+
+to run the app type the following command
+
+flask --app app.py --debug run 
