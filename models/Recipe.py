@@ -45,6 +45,11 @@ class Recipe(db.Model):
             return {'message': 'Recipe not found'}, HTTPStatus.NOT_FOUND
         recipe.recipe_name = data.get('recipe_name', recipe.recipe_name)
         recipe.instructions = data.get('instructions', recipe.instructions)
+        recipe.preparation_time_minutes = data.get('preparation_time_minutes',recipe.preparation_time_minutes)
+        recipe.cooking_time_minutes = data.get('cooking_time_minutes',recipe.cooking_time_minutes)
+        recipe.servings = data.get('servings',recipe.servings)
+        recipe.calories = data.get('calories',recipe.calories)
+        recipe.category = data.get('category',recipe.category)
         db.session.commit()
         return recipe.data, HTTPStatus.OK
     @classmethod

@@ -72,9 +72,19 @@ def routes(app):
         recipe_id = request.form.get('id')
         recipe_name = request.form.get('recipe_name')
         instructions = request.form.get('instructions')
+        preparation_time_minutes = request.form.get('preparation_time_minutes')
+        cooking_time_minutes = request.form.get('cooking_time_minutes')
+        servings = request.form.get('servings')
+        calories = request.form.get('calories')
+        category = request.form.get('category')
         data = {
         'recipe_name': recipe_name,
-        'instructions': instructions
+        'instructions': instructions,
+        'preparation_time_minutes':preparation_time_minutes,
+        'cooking_time_minutes':cooking_time_minutes,
+        'servings': servings,
+        'calories': calories,
+        'category': category
         }
         response, status = Recipe.update(recipe_id, data)
         data = Recipe.get_by_id(recipe_id)
