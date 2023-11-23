@@ -1,5 +1,27 @@
 from extensions import db
 from http import HTTPStatus
+import json
+
+class File():
+    @classmethod
+    def import_file(cls,filepath="models/data.json"):
+        try:
+            with open(filepath,"r") as file_pointer:
+                data = json.load(file_pointer)
+                return [True,data]
+        except FileNotFoundError:
+            print(f"The file {filepath} not found")
+            return [False]
+        except json.JSONDecodeError:
+            print(f"The file {filepath} contains not valid JSON Structure")
+            return False 
+    def save_file(r_data,filepath="models/data.json"):
+        file = File.import_file()
+        data = file[1]
+        data['recipes'].append(r_data)
+        data = json.dumps(data,indent=4)
+        with open(filepath,"w") as file_pointer:
+            file_pointer.write(data)
 class Recipe(db.Model):
     __tablename__ = 'recipe'
     id = db.Column(db.Integer, primary_key=True)
