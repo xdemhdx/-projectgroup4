@@ -1,21 +1,24 @@
 <!-- templates/recipes.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Recipes</title>
     <!-- Add any additional CSS or JS you need -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body{
+        body {
             background-image: linear-gradient(to right, #ff8177 0%, #ff867a 0%, #ff8c7f 21%, #f99185 52%, #cf556c 78%, #b12a5b 100%);
         }
     </style>
 </head>
-<body> 
+
+<body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/">Recipe Management System</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -28,7 +31,8 @@
                 </li>
                 <li class="nav-item">
                     <form class="form-inline" action="/search" method="get">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Get Recipe by ID" aria-label="Search" name="id">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Get Recipe by ID"
+                            aria-label="Search" name="id">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                     </form>
                 </li>
@@ -50,17 +54,18 @@
         </thead>
         <tbody class="text-center">
             {% for recipe in recipes %}
-                <tr>
-                    <td>{{ recipe['recipe_name'] }}</td>
-                    <td>{{ recipe['instructions'] }}</td>
-                    <td>{{ recipe['preparation_time_minutes'] }}</td>
-                    <td>{{ recipe['cooking_time_minutes'] }}</td>
-                    <td>{{ recipe['servings'] }}</td>
-                    <td>{{ recipe['calories'] }}</td>
-                    <td>{{ recipe['category'] }}</td>
-                </tr>
+            <tr>
+                <td>{{ recipe['recipe_name'] }}</td>
+                <td>{{ recipe['instruction'] }}</td>
+                <td>{{ recipe['preparation_time_minutes'] }}</td>
+                <td>{{ recipe['cooking_time_minutes'] }}</td>
+                <td>{{ recipe['servings'] }}</td>
+                <td>{{ recipe['calories'] }}</td>
+                <td>{{ recipe['category'] }}</td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
 </body>
+
 </html>

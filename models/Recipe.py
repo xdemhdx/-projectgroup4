@@ -84,7 +84,6 @@ class Recipe():
             return [False]
     @classmethod
     def get_by_id(self,r_id=0):
-        
         file = Recipe.get_all()
         result = {}
         if(file[0]):
@@ -92,23 +91,23 @@ class Recipe():
             for i in data:
                 if(i.get('id')==r_id):
                     result = i
-        if(len(result)>0):
-            return [True,result]
+            if(len(result)>0):
+                return [True,result]
         return [False]
         
     @classmethod
     def update(self, id, data):
-        prevData = Recipe.get_by_id(id)[1]
         all_data = Recipe.get_all()
         for i in all_data[1].get('recipes'):
             if(i.get('id')==id):
-            i.get('recipe_name'): self.recipe_name,
-            'instruction': self.instruction,
-            'preparation_time_minutes': self.preparation_time_minutes,
-            'cooking_time_minutes': self.cooking_time_minutes,
-            'servings': self.servings,
-            'calories': self.calories,
-            'category': self.category
+                i['recipe_name']= data['recipe_name']
+                i['instruction']= data['instruction']
+                i['preparation_time_minutes']= data['preparation_time_minutes']
+                i['cooking_time_minutes']= data['cooking_time_minutes']
+                i['servings']= data['servings']
+                i['calories']= data['calories']
+                i['category']= data['category']
+        File.save_file(all_data[1])
     @classmethod
     def delete(self,id):
         flag = False

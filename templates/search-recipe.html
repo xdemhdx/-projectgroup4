@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Recipe</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body{
+        body {
             background-image: linear-gradient(to right, #ff8177 0%, #ff867a 0%, #ff8c7f 21%, #f99185 52%, #cf556c 78%, #b12a5b 100%);
         }
     </style>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/">Recipe Management System</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -27,7 +30,8 @@
                 </li>
                 <li class="nav-item">
                     <form class="form-inline" action="/search" method="get">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Get Recipe by ID" aria-label="Search" name="id">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Get Recipe by ID"
+                            aria-label="Search" name="id">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                     </form>
                 </li>
@@ -39,40 +43,47 @@
     <div class="container mt-4">
         <h2>Edit Recipe</h2>
         <form action="/update-recipe" method="POST">
-            <input type="hidden" name="id" value="{{recipes.get('id')}}"> 
+            <input type="hidden" name="id" value="{{recipes.get('id')}}">
 
             <div class="form-group">
                 <label for="recipeName">Recipe Name</label>
-                <input type="text" class="form-control" id="recipeName" name="recipe_name" value="{{recipes.get('recipe_name')}}"required>
+                <input type="text" class="form-control" id="recipeName" name="recipe_name"
+                    value="{{recipes.get('recipe_name')}}" required>
             </div>
 
             <div>
                 <label for="instructions">Instructions</label>
-                <input type="text" class="form-control" id="instructions" name="instructions" rows="3" value="{{recipes.get('instructions')}}" required>
+                <input type="text" class="form-control" id="instructions" name="instruction" rows="3"
+                    value="{{recipes.get('instruction')}}" required>
             </div>
             <div class="form-group">
                 <label for="preparationTime"> Preparation Time (Minutes) </label>
-                <input type="number" class="form-control" id="preparationTime" name="preparation_time_minutes" rows="3" value="{{recipes.get('preparation_time_minutes')}}" required>
+                <input type="number" class="form-control" id="preparationTime" name="preparation_time_minutes" rows="3"
+                    value="{{recipes.get('preparation_time_minutes')}}" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="cookingTime"> Cooking Time (Minutes) </label>
-                <input type="number" class="form-control" id="cookingTime" name="cooking_time_minutes" rows="3" value="{{recipes.get('cooking_time_minutes')}}" required>
+                <input type="number" class="form-control" id="cookingTime" name="cooking_time_minutes" rows="3"
+                    value="{{recipes.get('cooking_time_minutes')}}" required>
             </div>
 
             <div class="form-group">
                 <label for="servings"> Servings </label>
-                <input type="number" class="form-control" id="servings" name="servings" rows="3" value="{{recipes.get('servings')}}" required>
+                <input type="number" class="form-control" id="servings" name="servings" rows="3"
+                    value="{{recipes.get('servings')}}" required>
             </div>
 
             <div class="form-group">
                 <label for="servings"> Calories </label>
-                <input type="number" class="form-control" id="calories" name="calories" rows="3" value="{{recipes.get('calories')}}" required>
+                <input type="number" class="form-control" id="calories" name="calories" rows="3"
+                    value="{{recipes.get('calories')}}" required>
             </div>
 
             <div class="form-group">
                 <label for="servings"> Category </label>
-                <input type="text" class="form-control" id="category" name="category" rows="3" value="{{recipes.get('category')}}" required>
+                <input type="text" class="form-control" id="category" name="category" rows="3"
+                    value="{{recipes.get('category')}}" required>
             </div>
 
             <button type="submit" class="btn btn-primary">Update Recipe</button>
@@ -81,4 +92,5 @@
         </form>
     </div>
 </body>
+
 </html>

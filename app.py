@@ -45,16 +45,15 @@ def routes(app):
             "cooking_time_minutes": cooking_time,
             "servings": servings,
             "calories":calories,
-            "category":category,
-            "ingredients":{"name":"flour","amount":"5 cups"}
+            "category":category
         }
-        result = Recipe(recipe_name=data['recipe_name'],instructions=data['instructions'],preparation_time_minutes=data['preparation_time_minutes'],cooking_time_minutes=data['cooking_time_minutes'],servings=data['servings'],calories=data['calories'],category=data['category'],ingredients=data['ingredients'])
-        result.add()
-        return result
+        result = Recipe.add(data)
+        # result.add()
+        # return result
 
     @app.route('/recipes')
     def all():
-        all_recipes = Recipe.get_all()
+        all_recipes = Recipe.get_all()[1].get('recipes')
         return render_template('allrecipes.html', recipes=all_recipes)
     # guys this route will return a recipe by id 
     @app.route('/search',methods=["GET"])
@@ -63,15 +62,15 @@ def routes(app):
         if rid.isdigit():
             rid = int(rid)
             data = Recipe.get_by_id(rid)
-            if data is None:
+            if not data[0]:
                 return  {"Message":" recipe not found"}
-            return render_template('search-recipe.html',recipes=data)
+            return render_template('search-recipe.html',recipes=data[1])
         return {"Message":"Entry type shoulb be integer or number"}
     @app.route('/update-recipe',methods=["POST"])
     def update_recipe():
-        recipe_id = request.form.get('id')
+        recipe_id = int(request.form.get('id'))
         recipe_name = request.form.get('recipe_name')
-        instructions = request.form.get('instructions')
+        instruction = request.form.get('instruction')
         preparation_time_minutes = request.form.get('preparation_time_minutes')
         cooking_time_minutes = request.form.get('cooking_time_minutes')
         servings = request.form.get('servings')
@@ -79,26 +78,27 @@ def routes(app):
         category = request.form.get('category')
         data = {
         'recipe_name': recipe_name,
-        'instructions': instructions,
+        'instruction': instruction,
         'preparation_time_minutes':preparation_time_minutes,
         'cooking_time_minutes':cooking_time_minutes,
         'servings': servings,
         'calories': calories,
         'category': category
         }
-        response, status = Recipe.update(recipe_id, data)
-        data = Recipe.get_by_id(recipe_id)
-        if status == HTTPStatus.OK:
-        # If update is successful
-            return render_template('search-recipe.html',recipes=data)
-        else:
-        # If recipe is not found or any other error
-            return jsonify({'message': 'Update failed'}), status
+        Recipe.update(recipe_id,data)
+        data = Recipe.get_by_id(recipe_id)[1]
+        return render_template('search-recipe.html',recipes=data)
+        # if status == HTTPStatus.OK:
+        # # If update is successful
+        #     return render_template('search-recipe.html',recipes=data)
+        # else:
+        # # If recipe is not found or any other error
+        #     return jsonify({'message': 'Update failed'}), status
 
     @app.route("/<int:recipe_id>/delete")
     def delete_recipe(recipe_id):
-        respones , status = Recipe.delete(recipe_id)
-        return {"Response":respones,"Status":status}
+        Recipe.delete(recipe_id)
+        
 
 
 
