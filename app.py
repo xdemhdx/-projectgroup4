@@ -49,8 +49,8 @@ def routes(app):
             "ingredients":{"name":"flour","amount":"5 cups"}
         }
         result = Recipe(recipe_name=data['recipe_name'],instructions=data['instructions'],preparation_time_minutes=data['preparation_time_minutes'],cooking_time_minutes=data['cooking_time_minutes'],servings=data['servings'],calories=data['calories'],category=data['category'],ingredients=data['ingredients'])
-        result.save()
-        return result.data
+        result.add()
+        return result
 
     @app.route('/recipes')
     def all():
