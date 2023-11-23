@@ -2,6 +2,8 @@ from extensions import db
 from http import HTTPStatus
 import json
 
+
+# this class File has to methods one for read the file and one for write the file for a json format
 class File():
     @classmethod
     def import_file(cls,filepath="models/data.json"):
@@ -18,47 +20,22 @@ class File():
     def save_file(r_data,filepath="models/data.json"):
         data = json.dumps(r_data,indent=4)
         with open(filepath,"w") as file_pointer:
-            file_pointer.write(data)
+            try:
+                file_pointer.write(data)
+                return True
+            except:
+                return False
+#class Recipe 
 class Recipe():
-
-    def __init__(self,recipe_name=None,instruction=None,preparation_time_minutes=None,cooking_time_minutes=None,servings=None,calories=None,category=None):
-        all_data = Recipe.get_all()[1]
-        length = Recipe.get_all()[1].get('recipes')
-        if(len(length)==0):
-            length =0
-        else:
-            length = length[-1]['id']
-        self.id = length+1
-        if recipe_name :
-            self.recipe_name = recipe_name
-        else:
-            raise 'error loading the recipe(name)'
-        if instruction :
-            self.instruction = instruction
-        else:
-            raise 'error loading the recipe(instruction)'
-        if preparation_time_minutes and preparation_time_minutes.isdigit() and int(preparation_time_minutes)>=0:
-            self.preparation_time_minutes=preparation_time_minutes
-        else:
-            raise 'error loading the recipe(prep)'
-        if cooking_time_minutes and cooking_time_minutes.isdigit() and int(cooking_time_minutes)>=0:
-            self.cooking_time_minutes = cooking_time_minutes
-        else:
-            raise 'error loading the recipe(cook)'
-        if  servings and servings.isdigit() and int(servings)>=0:
-            self.servings = servings
-        else:
-            raise 'error loading the recipe(servings)'
-        if  calories and calories.isdigit() and int(calories)>0:
-            self.calories = calories
-        else:
-            raise 'error loading the recipe(calories)'
-        if  category :
-            self.category= category
-        else:
-            raise 'error loading the recipe(category)'
-        all_data.get('recipes').append(self.data)
-        File.save_file(all_data)
+    def __init__(self, recipe_name, instruction, preparation_time_minutes, cooking_time_minutes, servings, calories, category):
+        self.recipe_name = recipe_name
+        self.instruction = instruction
+        self.preparation_time_minutes = preparation_time_minutes
+        self.cooking_time_minutes = cooking_time_minutes
+        self.servings = servings
+        self.calories = calories
+        self.category = category
+    # this method will fetch the object of Recipe class
     @property
     def data(self):
         return {
@@ -71,10 +48,47 @@ class Recipe():
             'calories': self.calories,
             'category': self.category
         }
+    # this method all revice a data and check for any illegal values if no illegal values encounterd then it will create an object of Recipe and add it to a file by calling a File.save method
     @classmethod 
-    def add(self,r_data):
-        Recipe(r_data['recipe_name'],r_data['instruction'],r_data['preparation_time_minutes'],r_data['cooking_time_minutes'],r_data['servings'],r_data['calories'],r_data['category'])
-        
+    def add(cls, r_data):
+        # Validation checks for illegal values | it returns boolean good for testing
+        if not r_data.get('recipe_name'):
+            raise ValueError('Error loading the recipe (name)')
+
+        if not r_data.get('instruction'):
+            raise ValueError('Error loading the recipe (instruction)')
+
+        if not r_data.get('preparation_time_minutes') or not r_data['preparation_time_minutes'].isdigit() or int(r_data['preparation_time_minutes']) < 0:
+            raise ValueError('Error loading the recipe (prep time)')
+
+        if not r_data.get('cooking_time_minutes') or not r_data['cooking_time_minutes'].isdigit() or int(r_data['cooking_time_minutes']) < 0:
+            raise ValueError('Error loading the recipe (cook time)')
+
+        if not r_data.get('servings') or not r_data['servings'].isdigit() or int(r_data['servings']) <= 0:
+            raise ValueError('Error loading the recipe (servings)')
+
+        if not r_data.get('calories') or not r_data['calories'].isdigit() or int(r_data['calories']) <= 0:
+            raise ValueError('Error loading the recipe (calories)')
+
+        if not r_data.get('category'):
+            raise ValueError('Error loading the recipe (category)')
+        new_recipe = cls(
+        r_data['recipe_name'],
+        r_data['instruction'],
+        r_data['preparation_time_minutes'],
+        r_data['cooking_time_minutes'],
+        r_data['servings'],
+        r_data['calories'],
+        r_data['category'])
+        # Save new recipe
+        all_data = cls.get_all()[1]
+        length = all_data.get('recipes', [])
+        new_recipe.id = length[-1]['id'] + 1 if length else 1
+        # Convert recipe object to dictionary and add to all_data
+        recipe_dict = vars(new_recipe)
+        all_data.get('recipes').append(recipe_dict)
+        return File.save_file(all_data)
+    # this method will retive all the recipes in the json file
     @classmethod
     def get_all(self):
         file = File.import_file()
@@ -82,6 +96,7 @@ class Recipe():
             return [True,file[1]]
         else:
             return [False]
+    # this method will retive all a specific recipe by id 
     @classmethod
     def get_by_id(self,r_id=0):
         file = Recipe.get_all()
@@ -94,20 +109,70 @@ class Recipe():
             if(len(result)>0):
                 return [True,result]
         return [False]
-        
+    # this method will update a recipe  including a validation checks
     @classmethod
-    def update(self, id, data):
+    def update(self,id, data):
         all_data = Recipe.get_all()
-        for i in all_data[1].get('recipes'):
-            if(i.get('id')==id):
-                i['recipe_name']= data['recipe_name']
-                i['instruction']= data['instruction']
-                i['preparation_time_minutes']= data['preparation_time_minutes']
-                i['cooking_time_minutes']= data['cooking_time_minutes']
-                i['servings']= data['servings']
-                i['calories']= data['calories']
-                i['category']= data['category']
-        File.save_file(all_data[1])
+        for recipe in all_data[1]['recipes']:
+            if recipe.get('id') == id:
+
+                if 'recipe_name' in data:
+                    if data['recipe_name']:
+                        recipe['recipe_name'] = data['recipe_name']
+                    else:
+                        raise ValueError('Error updating the recipe (name)')
+
+
+                if 'instruction' in data:
+                    if data['instruction']:
+                        recipe['instruction'] = data['instruction']
+                    else:
+                        raise ValueError('Error updating the recipe (instruction)')
+
+
+                if 'preparation_time_minutes' in data:
+                    ptm = data['preparation_time_minutes']
+                    if ptm.isdigit() and int(ptm) >= 0:
+                        recipe['preparation_time_minutes'] = ptm
+                    else:
+                        raise ValueError('Error updating the recipe (preparation time)')
+
+
+                if 'cooking_time_minutes' in data:
+                    ctm = data['cooking_time_minutes']
+                    if ctm.isdigit() and int(ctm) >= 0:
+                        recipe['cooking_time_minutes'] = ctm
+                    else:
+                        raise ValueError('Error updating the recipe (cooking time)')
+
+
+                if 'servings' in data:
+                    srv = data['servings']
+                    if srv.isdigit() and int(srv) > 0:
+                        recipe['servings'] = srv
+                    else:
+                        raise ValueError('Error updating the recipe (servings)')
+
+
+                if 'calories' in data:
+                    cal = data['calories']
+                    if cal.isdigit() and int(cal) > 0:
+                        recipe['calories'] = cal
+                    else:
+                        raise ValueError('Error updating the recipe (calories)')
+
+
+                if 'category' in data and data['category']:
+                    recipe['category'] = data['category']
+                else:
+                    raise ValueError('Error updating the recipe (category)')
+
+                File.save_file(all_data[1])
+                return True
+
+        # if no recipe with  given ID is found :)
+        return False
+    # this method will delete a specific recipe with a given id if it exist it will return true after deleting it 
     @classmethod
     def delete(self,id):
         flag = False

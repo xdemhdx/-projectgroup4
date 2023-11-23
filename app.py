@@ -32,7 +32,7 @@ def routes(app):
     @app.route("/add-recipe",methods=["POST"])
     def addrecipe():
         recipe_name = request.form.get('recipe_name')
-        instructions = request.form.get('instructions')
+        instruction = request.form.get('instruction')
         preparation_time = request.form.get('preparation_time')
         cooking_time = request.form.get('cooking_time')
         servings = request.form.get('servings')
@@ -40,7 +40,7 @@ def routes(app):
         category = request.form.get('category')
         data = {
             "recipe_name":recipe_name,
-            "instructions": instructions,
+            "instruction": instruction,
             "preparation_time_minutes":preparation_time,
             "cooking_time_minutes": cooking_time,
             "servings": servings,
@@ -48,8 +48,10 @@ def routes(app):
             "category":category
         }
         result = Recipe.add(data)
-        # result.add()
-        # return result
+        if(result):
+            return {"Suceeess":"Imported"}
+        return {"Error":"Unable to import"}
+
 
     @app.route('/recipes')
     def all():
@@ -88,16 +90,14 @@ def routes(app):
         Recipe.update(recipe_id,data)
         data = Recipe.get_by_id(recipe_id)[1]
         return render_template('search-recipe.html',recipes=data)
-        # if status == HTTPStatus.OK:
-        # # If update is successful
-        #     return render_template('search-recipe.html',recipes=data)
-        # else:
-        # # If recipe is not found or any other error
-        #     return jsonify({'message': 'Update failed'}), status
 
     @app.route("/<int:recipe_id>/delete")
     def delete_recipe(recipe_id):
-        Recipe.delete(recipe_id)
+        result = Recipe.delete(recipe_id)
+        if(result):
+            return {"Message":"Delete Successful"}
+        return {"Message":"Delete UnSuccessful Or ID does not exist!"}
+        
         
 
 

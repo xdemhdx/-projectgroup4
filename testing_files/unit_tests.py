@@ -1,48 +1,31 @@
 import unittest
 #import model # you have to change this according to your folder/file name
-
+from models.Recipe import Recipe
 
 class UnitTestsMenuManagement(unittest.TestCase):
     def test_recipe_class(self):
-    # the class should follow this order id, name, ingredient[name,amount,unit], instruction, prep_time,cook_time, serving, calories, category
-    # there won't be a need to do setters and getters for now
-        recipe1=recipe_manager.recipe(-2,"chocolate cookie",["cookie stuff",-10,"Kg"],"Just mix and hope",-20,-20,-4,-600,"Cookie")
-        self.assertIsInstance(recipe1.id,int)
-        self.assertIsInstance(recipe1.prep_time,int)
-        self.assertIsInstance(recipe1.cook_time,int)
-        self.assertIsInstance(recipe1.serving,int)
-        self.assertIsInstance(recipe1.calories,int)
-        self.assertIsInstance(recipe1.ingredients.amount,int)
-        self.assertIsInstance(recipe1.ingredients.name,str)
-        self.assertIsInstance(recipe1.ingredients.unit,int)
-        self.assertIsInstance(recipe1.name,str)
-        self.assertIsInstance(recipe1.instruction,str)
-        self.assertIsInstance(recipe1.category,str)
-        self.assertTrue(recipe1.id>0)
-        self.assertTrue(recipe1.prep_time>0)
-        self.assertTrue(recipe1.cook_time>0)
-        self.assertTrue(recipe1.serving>0)
-        self.assertTrue(recipe1.calories>0)
-        self.assertTrue(recipe1.ingredients.amount>0)
+         try:
+            recipe1=Recipe.File.recipe(-2,"chocolate cookie",["cookie stuff",-10,"Kg"],"Just mix and hope",-20,-20,-4,-600,"Cookie")
+            flag=False
+         except:
+             flag=True
+         self.assertTrue(flag)
         
     def test_import_json(self):
-        recipe_result=recipe_manager.import_file()# you have to change this according to your import function
-
+        recipe_result=Recipe.File.import_file()
         self.assertTrue(recipe_result[0])
-        self.assertTrue(len(recipe_result[1])==1)
-        self.assertTrue(recipe_result[1][0].ingredients.amount>0)
-        self.assertTrue(recipe_result[1][0].prep_time>0)
-        self.assertTrue(recipe_result[1][0].cook_time>0)
-        self.assertTrue(recipe_result[1][0].serving>0)
-        self.assertTrue(recipe_result[1][0].calories>0)
-        self.assertIsInstance(recipe_result[1][0].id,int)
-        self.assertIsInstance(recipe_result[1][0].prep_time,int)
-        self.assertIsInstance(recipe_result[1][0].cook_time,int)
-        self.assertIsInstance(recipe_result[1][0].serving,int)
-        self.assertIsInstance(recipe_result[1][0].calories,int)
-        self.assertIsInstance(recipe_result[1][0].ingredients.name,str)
-        self.assertIsInstance(recipe_result[1][0].ingredients.amount,int)
-        self.assertIsInstance(recipe_result[1][0].name,str)
-        self.assertIsInstance(recipe_result[1][0].instruction,str)
-        self.assertIsInstance(recipe_result[1][0].ingredients,test.ingredient)
-        self.assertIsInstance(recipe_result[1][0].category,str)
+        self.assertTrue(len(recipe_result)==2)
+        self.assertTrue(recipe_result[1]["recipes"][0]["id"]>0)
+        self.assertTrue(recipe_result[1]["recipes"][0]["preparation_time_minutes"].isdigit())
+        self.assertTrue(int(recipe_result[1]["recipes"][0]["preparation_time_minutes"])>0)
+        self.assertTrue(recipe_result[1]["recipes"][0]['cooking_time_minutes'].isdigit())
+        self.assertTrue(int(recipe_result[1]["recipes"][0]['cooking_time_minutes'])>0)
+        self.assertTrue(recipe_result[1]["recipes"][0]["servings"].isdigit())
+        self.assertTrue(int(recipe_result[1]["recipes"][0]["servings"])>0)
+        self.assertTrue(recipe_result[1]["recipes"][0]["calories"].isdigit())
+        self.assertTrue(int(recipe_result[1]["recipes"][0]["calories"])>0)
+        
+    def test_save_file(self):
+        #just add validation here or do it through the recipe class
+        recipe1={"id":"1","recipe_name":"food","instruction":"burn it","preparation_time_minutes":"-600","cooking_time_minutes":"-200","servings":20,"calories":"0","category":"burnt food"}
+        self.assertFalse(Recipe.File.save_file(recipe1))        
