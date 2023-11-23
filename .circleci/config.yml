@@ -13,4 +13,4 @@ jobs:
           command: python -m unittest unit_tests.py
       - run:
           name: Run integration tests
-          command: python -m unittest integration_tests.py
+          command: python -m unittest integ_tests.py
